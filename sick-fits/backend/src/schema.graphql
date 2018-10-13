@@ -1,12 +1,11 @@
-type User {
-  id: ID!,
-  name: String!
-}
-
+# import * from './generated/prisma.graphql'
+#it imports uses all the prisma generated graphql but
+#it only imports the datatypes if they are referenced
 type Mutation {
-  hi: String
+  createItem(title: String,description: String,
+  image: String,largeimage: String,price: Int): Item!
 }
 
 type Query {
-  hello: String
+  items: [Item]!
 }
