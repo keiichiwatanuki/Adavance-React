@@ -17,7 +17,7 @@ mutation DELETE_ITEM_MUTATION(
 class DeleteItem extends Component {
 
   update = (cache,payload) => {
-    //manually update the cache on the cliente, so it matches the server
+    //manually update the cache on the client, so it matches the server
     //1. read the cache for the items we want(it's done with a query)
     const data = cache.readQuery({query : ALL_ITEMS_QUERY});
     //2. fiter the deleted item out of the page
@@ -39,7 +39,7 @@ class DeleteItem extends Component {
         <button
           onClick={() => {
             if (confirm('Are you sure you want to delete this item?')) {
-              deleteItem();
+              deleteItem().catch(e => (alert(e)));
             }
           }}
         >
