@@ -1,4 +1,4 @@
-enum Permission{
+enum Permission {
   ADMIN
   USER
   ITEMCREATE
@@ -15,6 +15,7 @@ type User {
   resetToken: String
   resetTokenExpiry: Float
   permissions: [Permission]
+  cart: [CartItem!]!
 }
 
 type Item {
@@ -24,7 +25,14 @@ type Item {
   image: String
   largeimage: String
   price: Int!
-  #createdAt: DateTime! 
+  #createdAt: DateTime!
   #updatedAt: DateTime!
   user: User!
+}
+
+type CartItem {
+  id: ID! @unique
+  user: User! #relationship to user
+  item: Item! #relationship to item
+  quantity: Int! @default(value: 1)
 }

@@ -1,9 +1,9 @@
-import Nav from './Nav';
-import Link from 'next/link';
-import styled from 'styled-components';
-import Router from 'next/router';
-import NProgress from 'nprogress';
-import Cart from './Cart';
+import Nav from "./Nav";
+import Link from "next/link";
+import styled from "styled-components";
+import Router from "next/router";
+import NProgress from "nprogress";
+import Cart from "./Cart";
 
 Router.onRouteChangeStart = () => {
   NProgress.start();
@@ -54,24 +54,23 @@ const StyledHeader = styled.header`
   }
 `;
 
-
 const Header = () => {
-    return (
-        <StyledHeader>
-            <div className="bar">
-                <Logo>
-                  <Link href="/">
-                    <a>Sick Fits</a>
-                  </Link>
-                </Logo>
-                <Nav/> 
-            </div>
-            <div className="sub-bar">
-                <p>Search</p>
-            </div>
-            <Cart></Cart>
-        </StyledHeader>
-    );
+  return (
+    <StyledHeader>
+      <div className="bar">
+        <Logo>
+          <Link href="/">
+            <a>Sick Fits</a>
+          </Link>
+        </Logo>
+        <Nav />
+      </div>
+      <div className="sub-bar">
+        <p>Search</p>
+      </div>
+      <Cart />
+    </StyledHeader>
+  );
 };
 
 export default Header;
