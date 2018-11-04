@@ -9,6 +9,7 @@ import CartStyles from "./styles/CartStyles";
 import Supreme from "./styles/Supreme";
 import CloseButton from "./styles/CloseButton";
 import SickButton from "./styles/SickButton";
+import MPbutton from "./MPbutton";
 import calcTotalPrice from "../lib/calcTotalPrice";
 import formatMoney from "../lib/formatMoney";
 
@@ -61,6 +62,7 @@ const Cart = () => (
                 <SickButton>CheckOut</SickButton>
               </TakeMyMoney>
             )}
+            {me.cart.length && <MPbutton />}
           </footer>
         </CartStyles>
       );

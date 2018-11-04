@@ -11,7 +11,7 @@ const CREATE_ITEM_MUTATION = gql`
     $title: String!
     $description: String!
     $image: String
-    $largeImage: String
+    $largeimage: String
     $price: Int!
   ) {
     createItem(

@@ -7,11 +7,6 @@ const { hasPermission } = require("../utils");
 
 const stripe = require("../stripe");
 const mercadopago = require("mercadopago");
-//sacar esto de aca...obviamente...
-mercadopago.configure({
-  client_id: "8448432978772357",
-  client_secret: process.env.MERCADOPAGO_SECRET
-});
 
 const Mutations = {
   async createItem(parent, args, ctx, info) {
