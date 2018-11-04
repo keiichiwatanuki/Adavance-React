@@ -292,7 +292,7 @@ const Mutations = {
       { where: { id: userId } },
       `{ id name email 
         cart { id quantity 
-          item { title price id description image }
+          item { title price id description image largeImage }
         }
       }`
     );
@@ -309,14 +309,36 @@ const Mutations = {
       source: args.token
     });
     //4. Convert the cart Items to order Items
+    const orderItems = user.cart.map(cartItem => {
+      const orderItem = {
+        ...cartItem.item,
+        quantity: cartItem.quantity,
+        user: { connect: { id: userId } }
+      };
+      delete orderItem.id;
+      return orderItem;
+    });
     //5. create the order
-    //6. clean the user's cart
-    //7. delete cart item's
-    //8. return the order to the client
+    const order = await ctx.db.mutation.createOrder({
+      data: {
+        total: charge.amount,
+        charge: charge.id,
+        items: { create: orderItems },
+        user: { connect: { id: userId } }
+      }
+    });
+    //6. clean the user's cart delete cart item's
+    const cartItemIds = user.cart.map(cartItem => cartItem.id);
+    await ctx.db.mutation.deleteManyCartItems({
+      where: {
+        id_in: cartItemIds
+      }
+    });
+    //7. return the order to the client
+    return order;
   },
   async createOrderMP(parent, args, ctx, info) {
     console.log("mutation");
-    const items = [];
     const { userId } = ctx.request;
     if (!userId) {
       throw Error("You have to be logged in");
@@ -330,14 +352,15 @@ const Mutations = {
       }`
     );
 
-    user.cart.map(cart => {
-      items.push({
+    const items = user.cart.map(cart => {
+      item = {
         id: cart.id,
         title: cart.item.title,
         quantity: cart.quantity,
         currency_id: "ARS",
         unit_price: cart.item.price / 100
-      });
+      };
+      return item;
     });
     const preference = {
       items,

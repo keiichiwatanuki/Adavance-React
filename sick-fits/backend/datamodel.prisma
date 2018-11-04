@@ -23,7 +23,7 @@ type Item {
   title: String!
   description: String!
   image: String
-  largeimage: String
+  largeImage: String
   price: Int!
   #createdAt: DateTime!
   #updatedAt: DateTime!
@@ -41,8 +41,8 @@ type OrderItem {
   id: ID! @unique
   title: String!
   description: String!
-  image: String!
-  largeImage: String!
+  image: String
+  largeImage: String
   price: Int!
   quantity: Int! @default(value: "1")
   user: User

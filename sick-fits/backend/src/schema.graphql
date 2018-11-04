@@ -10,7 +10,7 @@ type Mutation {
     title: String
     description: String
     image: String
-    largeimage: String
+    largeImage: String
     price: Int
   ): Item!
   updateItem(id: ID!, title: String, description: String, price: Int): Item!

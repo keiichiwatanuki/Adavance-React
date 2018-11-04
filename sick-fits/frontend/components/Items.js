@@ -14,7 +14,7 @@ const ALL_ITEMS_QUERY = gql`
       description
       price
       image
-      largeimage
+      largeImage
     }
   }
 `;
