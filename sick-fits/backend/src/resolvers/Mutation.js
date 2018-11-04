@@ -346,14 +346,8 @@ const Mutations = {
       }
     };
 
-    mercadopago.preferences
-      .create(preference)
-      .then(function(preference) {
-        console.log(preference);
-      })
-      .catch(function(error) {
-        throw new Error(error.message);
-      });
+    const data = await mercadopago.preferences.create(preference);
+    return data.response.init_point;
   }
 };
 

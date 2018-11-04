@@ -25,9 +25,7 @@ const CREATE_ORDER_MUTATION = gql`
 
 const CREATE_ORDERMP_MUTATION = gql`
   mutation CREATE_ORDER_MUTATION {
-    createOrderMP {
-      id
-    }
+    createOrderMP
   }
 `;
 
@@ -36,6 +34,14 @@ function totalItems(cart) {
 }
 
 class TakeMyMoney extends Component {
+  state = {
+    link: ""
+  };
+
+  async onMP(createOrderMP) {
+    const { data } = await createOrderMP();
+    this.setState({ link: data.createOrderMP });
+  }
   onToken = (res, createOrder) => {
     console.log(res.id);
     //manually call the mutation once we have the stripe token
@@ -48,40 +54,45 @@ class TakeMyMoney extends Component {
   render() {
     return (
       <User>
-        {({ data: { me } }) => (
-          <Mutation
-            mutation={CREATE_ORDER_MUTATION}
-            refetchQueries={[{ query: CURRENT_USER_QUERY }]}
-          >
-            {createOrder => (
-              <StripeCheckout
-                amount={calcTotalPrice(me.cart)}
-                name="Sick Fits"
-                description={`Order of ${totalItems(me.cart)}`}
-                image={me.cart[0].item && me.cart[0].item.image}
-                stripeKey="pk_test_9tQTKRAne7uXCBDjLgJNsYHA"
-                currency="ARS"
-                email={me.email}
-                token={res => this.onToken(res, createOrder)}
-              >
-                {this.props.children}
-                <Mutation mutation={CREATE_ORDERMP_MUTATION}>
-                  {createOrderMP => {
-                    return (
-                      <button
-                        onClick={() => {
-                          createOrderMP().then(e => console.log(e));
-                        }}
-                      >
-                        MP
-                      </button>
-                    );
-                  }}
-                </Mutation>
-              </StripeCheckout>
-            )}
-          </Mutation>
-        )}
+        {({ data: { me } }) =>
+          (
+            <Mutation
+              mutation={CREATE_ORDER_MUTATION}
+              refetchQueries={[{ query: CURRENT_USER_QUERY }]}
+            >
+              {createOrder => (
+                <StripeCheckout
+                  amount={calcTotalPrice(me.cart)}
+                  name="Sick Fits"
+                  description={`Order of ${totalItems(me.cart)}`}
+                  image={me.cart[0].item && me.cart[0].item.image}
+                  stripeKey="pk_test_9tQTKRAne7uXCBDjLgJNsYHA"
+                  currency="ARS"
+                  email={me.email}
+                  token={res => this.onToken(res, createOrder)}
+                >
+                  {this.props.children}
+                </StripeCheckout>
+              )}
+            </Mutation>
+          ) && (
+            <Mutation mutation={CREATE_ORDERMP_MUTATION}>
+              {createOrderMP => {
+                return this.state.link === "" ? (
+                  <button
+                    onClick={() => {
+                      this.onMP(createOrderMP);
+                    }}
+                  >
+                    MP
+                  </button>
+                ) : (
+                  <a href={this.state.link}>click</a>
+                );
+              }}
+            </Mutation>
+          )
+        }
       </User>
     );
   }
