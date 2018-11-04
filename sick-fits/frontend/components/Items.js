@@ -34,6 +34,18 @@ const ItemsList = styled.div`
 // the query tags takes a query, and it has to have a function as a child,
 // in that function we destructure payload
 class Items extends Component {
+  /*getPayments(MP) {
+    MP.setPublishableKey("TEST-f15ed0e9-0c6d-4e80-b7e1-86f093315b01");
+    MP.getPaymentMethod({ bin: 424242 }, (status, res) =>
+      console.log(status, res)
+    );
+    MP.getPaymentMethods();
+  }
+
+  componentDidMount(props) {
+    this.getPayments(window.Mercadopago);
+    console.log(window.Mercadopago);
+  }*/
   render() {
     return (
       <Center>

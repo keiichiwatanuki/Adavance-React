@@ -7,13 +7,14 @@
     );
   }
 }*/
-import Link from 'next/link';
-import Items from '../components/Items';
+//<script src="https://secure.mlstatic.com/sdk/javascript/v1/mercadopago.js" />
+import Link from "next/link";
+import Items from "../components/Items";
 
 const Home = props => (
   <div>
-    <Items page={props.query.page || 1}/>
+    <Items page={props.query.page || 1} />
   </div>
-)
+);
 
 export default Home;

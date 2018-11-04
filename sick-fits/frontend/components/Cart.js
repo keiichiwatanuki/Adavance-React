@@ -4,6 +4,7 @@ import gql from "graphql-tag";
 import { adopt } from "react-adopt";
 import User from "./User";
 import CartItem from "./CartItem";
+import TakeMyMoney from "./TakeMyMoney";
 import CartStyles from "./styles/CartStyles";
 import Supreme from "./styles/Supreme";
 import CloseButton from "./styles/CloseButton";
@@ -55,7 +56,9 @@ const Cart = () => (
           </ul>
           <footer>
             <p>{formatMoney(calcTotalPrice(me.cart))}</p>
-            <SickButton>CheckOut</SickButton>
+            <TakeMyMoney>
+              <SickButton>CheckOut</SickButton>
+            </TakeMyMoney>
           </footer>
         </CartStyles>
       );

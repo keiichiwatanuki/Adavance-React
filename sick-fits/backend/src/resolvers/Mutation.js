@@ -5,6 +5,14 @@ const { promisify } = require("util");
 const { transport, makeANiceEmail } = require("../mail");
 const { hasPermission } = require("../utils");
 
+const stripe = require("../stripe");
+const mercadopago = require("mercadopago");
+//sacar esto de aca...obviamente...
+mercadopago.configure({
+  client_id: "8448432978772357",
+  client_secret: process.env.MERCADOPAGO_SECRET
+});
+
 const Mutations = {
   async createItem(parent, args, ctx, info) {
     //check if they are loged in
@@ -273,6 +281,79 @@ const Mutations = {
       },
       info
     );
+  },
+  async createOrder(parent, args, ctx, info) {
+    //1. query the current user and make sure they are signed in
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw Error("You have to be logged in");
+    }
+    const user = await ctx.db.query.user(
+      { where: { id: userId } },
+      `{ id name email 
+        cart { id quantity 
+          item { title price id description image }
+        }
+      }`
+    );
+    //2. recalculate the total for the price
+    const amount = user.cart.reduce(
+      (tally, cartItem) => tally + cartItem.item.price * cartItem.quantity,
+      0
+    );
+    console.log(`going to charge ${amount}`);
+    //3. create the stripe charge turn token into $$$$
+    const charge = await stripe.charges.create({
+      amount,
+      currency: "ARS",
+      source: args.token
+    });
+    //4. Convert the cart Items to order Items
+    //5. create the order
+    //6. clean the user's cart
+    //7. delete cart item's
+    //8. return the order to the client
+  },
+  async createOrderMP(parent, args, ctx, info) {
+    console.log("mutation");
+    const items = [];
+    const { userId } = ctx.request;
+    if (!userId) {
+      throw Error("You have to be logged in");
+    }
+    const user = await ctx.db.query.user(
+      { where: { id: userId } },
+      `{ id name email 
+        cart { id quantity 
+          item { title price id description image }
+        }
+      }`
+    );
+
+    user.cart.map(cart => {
+      items.push({
+        id: cart.id,
+        title: cart.item.title,
+        quantity: cart.quantity,
+        currency_id: "ARS",
+        unit_price: cart.item.price / 100
+      });
+    });
+    const preference = {
+      items,
+      payer: {
+        email: "test_user_60995584@testuser.com"
+      }
+    };
+
+    mercadopago.preferences
+      .create(preference)
+      .then(function(preference) {
+        console.log(preference);
+      })
+      .catch(function(error) {
+        throw new Error(error.message);
+      });
   }
 };
 
