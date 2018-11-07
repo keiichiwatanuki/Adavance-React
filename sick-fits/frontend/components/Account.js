@@ -3,7 +3,7 @@ import { User } from "./User";
 import { ItemStyles } from "./styles/ItemStyles";
 
 const Account = props => {
-  const me = user.data.me;
+  const me = props.user.data.me;
   return (
     <User>
       <ItemStyles>
