@@ -1,15 +1,17 @@
 import React from "react";
 import User from "./User";
 import ItemStyles from "./styles/ItemStyles";
+import { ENUM_VALUE_DEFINITION } from "graphql/language/kinds";
 
 const Account = props => {
-  const me = props.user.data.me;
   return (
     <User>
-      <ItemStyles>
-        <h2>{me.name}</h2>
-        <h1>{me.email}</h1>
-      </ItemStyles>
+      {({ data: { me } }) => (
+        <ItemStyles>
+          <h1>Name: {me.name}</h1>
+          <h2>Email: {me.email}</h2>
+        </ItemStyles>
+      )}
     </User>
   );
 };
