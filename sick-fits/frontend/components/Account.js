@@ -1,6 +1,6 @@
 import React from "react";
-import { User } from "./User";
-import { ItemStyles } from "./styles/ItemStyles";
+import User from "./User";
+import ItemStyles from "./styles/ItemStyles";
 
 const Account = props => {
   const me = props.user.data.me;
