@@ -9,7 +9,7 @@ import calcTotalPrice from "../lib/calcTotalPrice";
 import Error from "./ErrorMessage";
 import User, { CURRENT_USER_QUERY } from "./User";
 import SickButton from "./styles/SickButton";
-
+//TODO reset the button if something is added to the cart
 const CREATE_ORDER_MUTATION = gql`
   mutation CREATE_ORDER_MUTATION {
     createOrderMP

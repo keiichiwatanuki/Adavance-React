@@ -4,10 +4,6 @@ const { hasPermission } = require("../utils");
 //just fordward the queryes
 
 const Query = {
-  /*  async items(parent,args,ctx,info){
-    const items = await ctx.db.query.items();
-    return items;
-  }  */
   items: forwardTo("db"),
   item: forwardTo("db"),
   itemsConnection: forwardTo("db"),
@@ -25,7 +21,6 @@ const Query = {
     ); //info is the query that's coming from the client
   },
   async users(parent, args, ctx, info) {
-    console.log("1", ctx.request);
     //1. check if the user is logged in
     if (!ctx.request.userId) {
       throw Error("you have no power here");

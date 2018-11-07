@@ -2,6 +2,7 @@
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const mercadopago = require("mercadopago");
+const myParser = require("body-parser");
 require("dotenv").config({ path: "variables.env" });
 const createServer = require("./createServer");
 const db = require("./db");
@@ -13,6 +14,24 @@ mercadopago.configure({
 });
 
 const server = createServer();
+
+server.express.use(myParser.urlencoded({ extended: true }));
+server.express.use(myParser.json());
+//because the payment button doesnt return any id, i will have to look for the user
+//of the notification
+server.express.post("/mercadopago", async (req, res, next) => {
+  const { type } = req.query;
+  if (req.body.action === "payment.created" && type === "payment") {
+    const {
+      action,
+      data: { id }
+    } = req.body;
+    console.log(action, id);
+  } else {
+  }
+  //TODO fetch the payment info, and assign the id to the user that has the same email or dni
+  next();
+});
 
 server.express.use(cookieParser());
 //1.decode the current jwt so we can get the user id on each request
@@ -36,7 +55,6 @@ server.express.use(async (req, res, next) => {
   req.user = user;
   next();
 });
-
 server.start(
   {
     cors: {

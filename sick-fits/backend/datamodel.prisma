@@ -46,6 +46,7 @@ type OrderItem {
   price: Int!
   quantity: Int! @default(value: "1")
   user: User
+  payment_id: String @default(value: "")
 }
 
 type Order {

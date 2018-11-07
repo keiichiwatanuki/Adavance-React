@@ -1,7 +1,7 @@
-endpoint: ${env:PRISMA_ENDPOINT}
+#endpoint: ${env:PRISMA_ENDPOINT}
+endpoint: https://fits-keiichi-prod-2bdba1ee0f.herokuapp.com/keiichi-prod/prod
 datamodel: datamodel.prisma
 #secret: ${env:PRISMA_SECRET}
-#read about post-deploy hooks...
 hooks:
   post-deploy:
-      - graphql get-schema -p prisma
+    - graphql get-schema -p prisma

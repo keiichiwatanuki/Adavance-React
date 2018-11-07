@@ -360,12 +360,21 @@ const Mutations = {
     const preference = {
       items,
       payer: {
-        email: "test_user_60995584@testuser.com"
-      }
+        email: user.email
+      },
+      back_urls: {
+        success: "localhost:7777",
+        pending: "",
+        failure: "localhost:7777/fail"
+      },
+      notification_url:
+        "https://webhook.site/8e737bb3-2d74-45de-af49-30432079cdb8"
     };
-
-    const data = await mercadopago.preferences.create(preference);
-    return data.response.init_point;
+    //TODO guardar el id del pago en la db junto con la orden e implementar
+    //el webhook para actualizar el estado del pago
+    const { response } = await mercadopago.preferences.create(preference);
+    console.log(response);
+    return response.init_point;
   }
 };
 
