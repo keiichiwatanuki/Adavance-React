@@ -33,9 +33,17 @@ const Mutations = {
     );
     return item;
   },
-  updateItem(parent, args, ctx, info) {
+  async updateItem(parent, args, ctx, info) {
     if (!ctx.request.userId) {
       throw new Error("You must be logged in to do that");
+    }
+    const item = await ctx.db.query.item({ where }, `{id title user {id}}`);
+    const ownsItem = item.user.id === ctx.request.userId;
+    const hasPermissions = ctx.request.user.permissions.some(permissions =>
+      ["ADMIN", "ITEMDELETE"].includes(permissions)
+    );
+    if (!ownsItem || !hasPermissions) {
+      throw new Error("you dont have permission to edit this");
     }
     //first take a copy of the updates
     const updates = { ...args };
