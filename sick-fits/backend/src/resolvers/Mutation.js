@@ -34,6 +34,9 @@ const Mutations = {
     return item;
   },
   updateItem(parent, args, ctx, info) {
+    if (!ctx.request.userId) {
+      throw new Error("You must be logged in to do that");
+    }
     //first take a copy of the updates
     const updates = { ...args };
     //remove id from the updates, because it doesn't change
